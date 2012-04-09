@@ -12,6 +12,8 @@
   </tbody>
 </table>
 
+<div id="pagination-summary"></div>
+
 <script id="rubbish" type='template'>
   <tr>
     <td>{{ name }}</td>
@@ -28,7 +30,8 @@
     url: "http://localhost:3000/books", 
     renderRowCallBack: function(element, row) { 
       element.find("tbody").append(compiled(row));
-    } 
+    },
+    paginationElement: $("#pagination-summary")
   });
 
 </script>
