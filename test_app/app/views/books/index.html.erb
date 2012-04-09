@@ -1,0 +1,38 @@
+<h2>Books</h2>
+
+<table>
+  <thead>
+    <th>Name</th>
+    <th>Author</th>
+    <th>Subject</th>
+    <th>Quantity</th>
+  </thead>
+  <tbody>
+
+  </tbody>
+</table>
+
+<script id="rubbish" type='template'>
+  <tr>
+    <td>{{ name }}</td>
+    <td>{{ author }}</td>
+    <td>{{ subject }}</td>
+    <td>{{ quantity }}</td>
+  </tr>
+</script>
+
+<script>
+  var compiled = _.template($("#rubbish").html());
+
+  $("table").resourceTable( { 
+    url: "http://localhost:3000/books", 
+    renderRowCallBack: function(element, row) { 
+      element.find("tbody").append(compiled(row));
+    } 
+  });
+
+</script>
+
+
+
+

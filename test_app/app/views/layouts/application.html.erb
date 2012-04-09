@@ -8,6 +8,11 @@
 </head>
 <body>
 
+<script>
+  _.templateSettings = {
+    interpolate : /\{\{(.+?)\}\}/g
+  };
+</script>
 <%= yield %>
 
 </body>

@@ -1,0 +1,48 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+one: 
+  name: "The Adventures of Sherlock Holmes"
+  subject: "Detective and mystery stories, English"
+  author: Doyle, Arthur Conan, Sir
+  quantity: 5
+# column: value
+#
+two: 
+  name: Muito Prazer
+  subject: Portuguese Language
+  author: Disal
+  quantity: 2
+
+three: 
+  name: The Kama Sutra of Vatsyayana
+  subject: Love
+  author: Vatsyayana
+  quantity: 4
+
+four: 
+  name: Adventures of Huckleberry Finn 
+  subject: Male Friendship
+  author: Mark Twain
+  quantity: 2
+
+five: 
+  name: Pride and Prejudice
+  subject: Courtship
+  author: Jane Austin
+  quantity: 6
+
+six: 
+  name: Sense and Sesibility
+  subject: Courtship
+  author: Jane Austin
+  quantity: 3
+
+seven: 
+  name: Emma
+  subject: Courtship
+  author: Jane Austin
+  quantity: 1
