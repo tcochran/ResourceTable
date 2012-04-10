@@ -1,16 +1,16 @@
 describe("ResourceTable data ", function(){
 
   it("Should load json data from url", function(){
-    var resourceTable = new ResourceTable.Loader(null, "some url", function() { } );
+    var resourceTable = new ResourceTable.Loader("some url", function() { } );
     resourceTable.pagination = jasmine.createSpy();
     spyOn(jQuery, "getJSON");
     resourceTable.load()
 
-    expect(jQuery.getJSON).toHaveBeenCalledWith("some url", null, jasmine.any(Function));
+    expect(jQuery.getJSON).toHaveBeenCalledWith("some url?", null, jasmine.any(Function));
   });
 
   it("Should generate pagination links", function(){
-    var resourceTable = new ResourceTable.Loader(null, "some url", function() { } );
+    var resourceTable = new ResourceTable.Loader("some url", function() { }, $({}) );
     spyOn(resourceTable.pagination, "generate")
     spyOn(jQuery, "getJSON").andCallFake(function(value, data, callBack) { callBack([1, 2]); });
 
@@ -21,14 +21,13 @@ describe("ResourceTable data ", function(){
 
   it("should render rows via callback", function(){
     var stubCallBack = jasmine.createSpy();
-    var resourceTable = new ResourceTable.Loader("element", "some url", stubCallBack);
+    var resourceTable = new ResourceTable.Loader("some url", stubCallBack, $({}));
     spyOn(resourceTable.pagination, "generate")
     
     spyOn(jQuery, "getJSON").andCallFake(function(value, data, callBack) { callBack({data: [1, 2]}); });
     resourceTable.load();
 
-    expect(stubCallBack.calls[0].args).toEqual(["element", 1])
-    expect(stubCallBack.calls[1].args).toEqual(["element", 2])
+    expect(stubCallBack.calls[0].args).toEqual([[1, 2]])
   
   });
 });
@@ -119,7 +118,6 @@ describe("ResourceTable pagination", function(){
 
     expect(links[5]).toEqual({name: "10", disabled: true, link: 10 });
 
-
   });
 
 });
@@ -149,7 +147,27 @@ describe("ResourceTable pagination render", function(){
     var summary = [{name: "", link: 1, disabled: false } ]
     ResourceTable.PaginationLinks.render(element, summary, "some_url");
   
-    expect(element.find("> a:first").attr("href")).toBe("some_url?page=1");
+    expect(element.find("> a:first").attr("href")).toBe("some_url#page=1");
   }); 
+
+});
+
+describe("ResourceTable url", function () {
+  it ("should parse url to get give query string key value pairs", function(){
+    var url = "http://some_url#page=1&sort=name&direction=asc";
+    var rtUrl = new ResourceTable.Url("", url)
+
+    expect(rtUrl.query.page).toBe("1");
+    expect(rtUrl.query.sort).toBe("name");
+    expect(rtUrl.query.direction).toBe("asc");
+  });
+
+  it ("should convert hash code url to query string", function(){
+    var url = "http://some_url#page=1&sort=name&direction=asc";
+    var rtUrl = new ResourceTable.Url("http://some_url", url);
+    var queryUrl = rtUrl.hash_to_query();
+    expect(queryUrl).toBe("http://some_url?page=1&sort=name&direction=asc")
+
+  });
 
 });

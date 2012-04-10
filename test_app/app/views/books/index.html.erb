@@ -28,8 +28,9 @@
 
   $("table").resourceTable( { 
     url: "http://localhost:3000/books", 
-    renderRowCallBack: function(element, row) { 
-      element.find("tbody").append(compiled(row));
+    renderDataCallBack: function(data) { 
+      $("tbody").empty();
+      _.each(data, function(row) { $("tbody").append(compiled(row)) });
     },
     paginationElement: $("#pagination-summary")
   });
