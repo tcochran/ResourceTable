@@ -22,12 +22,9 @@
 
 }( jQuery ) );
 
-
-// Resource Table class
-
 ResourceTable = {}
 
-ResourceTable.Loader = function(url, renderDataCallBack, paginationElement){
+ResourceTable.Loader = function(url, renderDataCallBack, paginationElement, ){
   var self = this;
   this.url = new ResourceTable.Url(url, window.location.href);
   this.renderDataCallBack = renderDataCallBack;
@@ -35,10 +32,11 @@ ResourceTable.Loader = function(url, renderDataCallBack, paginationElement){
   this.paginationElement = paginationElement;
   
 
-  window.onhashchange = function () {
+  ResourceTable.Loader.listenToAnchorChangedEvents(function(){
     self.url = new ResourceTable.Url(url, window.location.href);
     self.load();
-  }
+  });
+  
 };
 
 ResourceTable.Loader.prototype.load = function() {
@@ -49,7 +47,26 @@ ResourceTable.Loader.prototype.load = function() {
     var paginationResults = self.pagination.generate(result);
     ResourceTable.PaginationLinks.render(self.paginationElement, paginationResults, self.url.base_url);
   });
+};
 
+//Not sure this can be tested easily with jasmine, perhaps selenium
+ResourceTable.Loader.listenToAnchorChangedEvents = function(callBack) {
+  var self = this;
+
+  if ("onhashchanged" in window) { 
+    window.onhashchange = function () {
+      callBack();
+    }
+  }
+  else { 
+      var storedHash = window.location.hash;
+      window.setInterval(function () {
+        if (window.location.hash != storedHash) {
+          storedHash = window.location.hash;
+          callBack();
+        }
+      }, 100);
+  }
 };
 
 ResourceTable.Pagination = function() {
@@ -109,16 +126,19 @@ ResourceTable.PaginationLinks.render = function(element, pagination_summary, bas
   });
 }
 
+
 ResourceTable.Url = function(base_url, full_url) { 
   this.base_url = base_url;
   this.query = this.parse_hash(full_url);
 }
+
 ResourceTable.Url.prototype.parse_hash = function(url) {
   var matches = url.match(/([&#])([^#&=]+)=?([^&#]+)/g);
   var queryHash = { };
   _.each(matches, function(query){ 
     var match = /^[&#](.+)=(.+)$/.exec(query);
-    queryHash[match[1]] = match[2];
+    if (match != null)
+      queryHash[match[1]] = match[2];
   });
   return queryHash;
 };

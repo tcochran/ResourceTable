@@ -1,4 +1,4 @@
-describe("ResourceTable data ", function(){
+describe("ResourceTable loader ", function(){
 
   it("Should load json data from url", function(){
     var resourceTable = new ResourceTable.Loader("some url", function() { } );
@@ -30,6 +30,7 @@ describe("ResourceTable data ", function(){
     expect(stubCallBack.calls[0].args).toEqual([[1, 2]])
   
   });
+
 });
 
 describe("ResourceTable pagination", function(){
