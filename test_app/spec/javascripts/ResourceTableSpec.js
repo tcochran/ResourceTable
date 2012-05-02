@@ -76,6 +76,8 @@ describe("ResourceTable pagination", function(){
     var pagination = new ResourceTable.Pagination();
     var links = pagination.generate(results);
 
+    expect(links.length).toEqual(7)
+
     expect(links[1]).toEqual({name: "1", disabled: true, link: 1 });
     expect(links[2]).toEqual({name: "2", disabled: false, link: 2 });
     expect(links[3]).toEqual({name: "3", disabled: false, link: 3 });
@@ -89,6 +91,8 @@ describe("ResourceTable pagination", function(){
 
     var pagination = new ResourceTable.Pagination();
     var links = pagination.generate(results);
+
+    expect(links.length).toEqual(7)
 
     expect(links[1]).toEqual({name: "2", disabled: false, link: 2 });
     expect(links[2]).toEqual({name: "3", disabled: false, link: 3 });

@@ -24,7 +24,7 @@
 
 ResourceTable = {}
 
-ResourceTable.Loader = function(url, renderDataCallBack, paginationElement, ){
+ResourceTable.Loader = function(url, renderDataCallBack, paginationElement ){
   var self = this;
   this.url = new ResourceTable.Url(url, window.location.href);
   this.renderDataCallBack = renderDataCallBack;
@@ -83,19 +83,20 @@ ResourceTable.Pagination.prototype._calculatefirstAndLastPage = function(results
     lastPage = numPages;
     firstPage = lastPage - (2 * this.numOfLinks);
   }
-  
+
   if (firstPage < 1) {
-    lastPage =  1 + (numPages * 2);
+    lastPage =  1 + (this.numOfLinks * 2);
     if (lastPage > numPages) {
       lastPage = numPages;
     }
     firstPage = 1;
   }
+
   return [firstPage, lastPage];
 };
 
 ResourceTable.Pagination.prototype.generate = function(results) {  
-  
+
   var previousLink = {name: "Previous", link: results.page - 1, disabled: results.page == 1};
   var links = [previousLink];
 
@@ -125,7 +126,6 @@ ResourceTable.PaginationLinks.render = function(element, pagination_summary, bas
     }
   });
 }
-
 
 ResourceTable.Url = function(base_url, full_url) { 
   this.base_url = base_url;
