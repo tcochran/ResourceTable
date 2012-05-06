@@ -1,5 +1,8 @@
 <h2>Books</h2>
 
+<a href="" class="sort" data-sort-direction="ASC" data-sort-key="name" >sort by name</a><br/>
+<a href="" class="sort" data-sort-direction="ASC" data-sort-key="author" >sort by author</a><br/>
+
 <table>
   <thead>
     <th>Name</th>
@@ -11,6 +14,8 @@
 
   </tbody>
 </table>
+
+
 
 <div id="pagination-summary"></div>
 
@@ -26,6 +31,8 @@
 <script>
   var compiled = _.template($("#rubbish").html());
 
+
+
   $("table").resourceTable( { 
     url: "http://localhost:3000/books", 
     renderDataCallBack: function(data) { 
@@ -34,6 +41,16 @@
     },
     paginationElement: $("#pagination-summary")
   });
+
+  $(".sort").click(function(){
+    var element = $(this);
+    var key = element.data("sort-key");
+    var direction = element.data("sort-direction");
+    $("table").resourceTable("sort", key, direction);
+    return false;
+  });
+
+
 
 </script>
 

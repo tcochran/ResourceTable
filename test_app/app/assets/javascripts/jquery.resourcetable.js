@@ -16,6 +16,10 @@
     _create: function() {
      this.table = new ResourceTable.Loader(this.options.url, this.options.renderDataCallBack, this.options.paginationElement);
      this.table.load();
+    },
+
+    sort: function(name, direction) {
+      this.table.sort(name, direction);
     }
 
   });
@@ -40,9 +44,11 @@ ResourceTable.Loader = function(url, renderDataCallBack, paginationElement ){
 };
 
 ResourceTable.Loader.prototype.sort = function(key, direction) { 
-    this.url.query.sort = key;
-    this.url.query.sort_direction = direction;
-    this.load();
+    this.url.change_hash({sort:key, sort_direction: direction});
+}
+
+ResourceTable.Loader.prototype.change_page = function(page_num) { 
+    this.url.change_hash({page: page_num});
 }
 
 ResourceTable.Loader.prototype.load = function() {
@@ -51,7 +57,7 @@ ResourceTable.Loader.prototype.load = function() {
   $.getJSON(this.url.hash_to_url(), null, function(result){ 
     self.renderDataCallBack(result.data);
     var paginationResults = self.pagination.generate(result);
-    ResourceTable.PaginationLinks.render(self.paginationElement, paginationResults, self.url.base_url);
+    ResourceTable.PaginationLinks.render(self.paginationElement, paginationResults, self);
   });
 };
 
@@ -121,13 +127,14 @@ ResourceTable.Pagination.prototype.generate = function(results) {
 };
 
 ResourceTable.PaginationLinks = {}
-ResourceTable.PaginationLinks.render = function(element, pagination_summary, base_url) {
+ResourceTable.PaginationLinks.render = function(element, pagination_summary, resourceTable) {
   element.empty();
   _.each(pagination_summary, function(pagination_link){
     if (!pagination_link.disabled) {
-      element.append($("<a>", { href: base_url + "#page=" + pagination_link.link }).html(pagination_link.name));
+      var link = $("<a>", {href: ""}).html(pagination_link.name)
+      element.append(link);
+      link.click(function() { resourceTable.change_page(pagination_link.link); return false; });
     } else {
-
       element.append($("<span>").html(pagination_link.name));
     }
   });
@@ -149,6 +156,12 @@ ResourceTable.Url.prototype.parse_hash = function(url) {
   return queryHash;
 };
 
+ResourceTable.Url.prototype.change_hash = function(new_hash) {
+  var self = this;
+ _.each(new_hash, function(value, key) { self.query[key] = value; });
+  ResourceTable.Navigation.change_hash(this.hash_to_query());
+};
+
 ResourceTable.Url.prototype.hash_to_query = function() { 
   return _.map(this.query, function(value, key){ return key + "=" + value; }).join("&");
 };
@@ -159,5 +172,9 @@ ResourceTable.Url.prototype.hash_to_url = function() {
   return url;
 };
 
+ResourceTable.Navigation = {}
+ResourceTable.Navigation.change_hash = function (hash) {
+  window.location.hash = hash;
+};
 
 

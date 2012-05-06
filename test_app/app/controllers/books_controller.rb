@@ -3,9 +3,9 @@ class BooksController < ApplicationController
   PageSize = 2
 	def index
     page = (params[:page] || 1).to_i
-    p params
     offset = (page - 1) * PageSize
-		@books = Book.all(:limit => PageSize, :offset => offset)
+    order = "#{params[:sort] || "name"} #{params[:sort_direction] || "asc"}"
+		@books = Book.all(:limit => PageSize, :offset => offset, :order => order)
 		
     results = {data: @books, page: page, total: Book.count, page_size: PageSize }
 

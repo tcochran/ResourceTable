@@ -147,14 +147,6 @@ describe("ResourceTable pagination render", function(){
     expect(element.find("> span:first").html()).toBe("test span");
   }); 
 
-  it("should add page query to url", function(){
-    var element = $("<div>");
-    var summary = [{name: "", link: 1, disabled: false } ]
-    ResourceTable.PaginationLinks.render(element, summary, "some_url");
-  
-    expect(element.find("> a:first").attr("href")).toBe("some_url#page=1");
-  }); 
-
 });
 
 describe("ResourceTable url", function () {
@@ -182,12 +174,13 @@ describe ("ResourceTable sorting", function(){
 
     var stubCallBack = jasmine.createSpy();
     var resourceTable = new ResourceTable.Loader("some url", stubCallBack, $({}));
-    spyOn(resourceTable.pagination, "generate")
+    spyOn(resourceTable.pagination, "generate");
     
-    spyOn(jQuery, "getJSON").andCallFake(function(value, data, callBack) { callBack({data: [1, 2]}); });
+    
+    spyOn(ResourceTable.Navigation, "change_hash");
     resourceTable.sort("name", "asc");
 
-    expect(jQuery.getJSON).toHaveBeenCalledWith("some url?sort=name&sort_direction=asc", null, jasmine.any(Function));
+    expect(ResourceTable.Navigation.change_hash).toHaveBeenCalledWith("sort=name&sort_direction=asc");
 
   });
 
