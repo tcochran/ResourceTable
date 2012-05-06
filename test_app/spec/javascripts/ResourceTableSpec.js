@@ -170,9 +170,26 @@ describe("ResourceTable url", function () {
   it ("should convert hash code url to query string", function(){
     var url = "http://some_url#page=1&sort=name&direction=asc";
     var rtUrl = new ResourceTable.Url("http://some_url", url);
-    var queryUrl = rtUrl.hash_to_query();
+    var queryUrl = rtUrl.hash_to_url();
     expect(queryUrl).toBe("http://some_url?page=1&sort=name&direction=asc")
 
   });
+
+});
+
+describe ("ResourceTable sorting", function(){
+  it ("should sort", function(){
+
+    var stubCallBack = jasmine.createSpy();
+    var resourceTable = new ResourceTable.Loader("some url", stubCallBack, $({}));
+    spyOn(resourceTable.pagination, "generate")
+    
+    spyOn(jQuery, "getJSON").andCallFake(function(value, data, callBack) { callBack({data: [1, 2]}); });
+    resourceTable.sort("name", "asc");
+
+    expect(jQuery.getJSON).toHaveBeenCalledWith("some url?sort=name&sort_direction=asc", null, jasmine.any(Function));
+
+  });
+
 
 });

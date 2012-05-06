@@ -39,10 +39,16 @@ ResourceTable.Loader = function(url, renderDataCallBack, paginationElement ){
   
 };
 
+ResourceTable.Loader.prototype.sort = function(key, direction) { 
+    this.url.query.sort = key;
+    this.url.query.sort_direction = direction;
+    this.load();
+}
+
 ResourceTable.Loader.prototype.load = function() {
   var self = this;
 
-  $.getJSON(this.url.hash_to_query(), null, function(result){ 
+  $.getJSON(this.url.hash_to_url(), null, function(result){ 
     self.renderDataCallBack(result.data);
     var paginationResults = self.pagination.generate(result);
     ResourceTable.PaginationLinks.render(self.paginationElement, paginationResults, self.url.base_url);
@@ -144,8 +150,12 @@ ResourceTable.Url.prototype.parse_hash = function(url) {
 };
 
 ResourceTable.Url.prototype.hash_to_query = function() { 
+  return _.map(this.query, function(value, key){ return key + "=" + value; }).join("&");
+};
+
+ResourceTable.Url.prototype.hash_to_url = function() { 
   var url = this.base_url + "?";
-  url += _.map(this.query, function(value, key){ return key + "=" + value; }).join("&");
+  url += this.hash_to_query();
   return url;
 };
 
