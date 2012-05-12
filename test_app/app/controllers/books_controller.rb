@@ -17,7 +17,7 @@ class BooksController < ApplicationController
 
         @books = Book.all(:limit => PageSize, :offset => offset, :order => order, :conditions => conditions)
         
-        results = {data: @books, page: page, total: Book.count, page_size: PageSize }
+        results = {data: @books, page: page, total: Book.count(:conditions => conditions), page_size: PageSize }
 
         render json: results 
       end
