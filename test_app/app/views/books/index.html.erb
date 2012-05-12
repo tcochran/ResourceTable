@@ -15,6 +15,10 @@
   </tbody>
 </table>
 
+<select name="author" class="filter">
+  <%= options_for_select @authors %>
+</select>
+
 
 
 <div id="pagination-summary"></div>
@@ -47,6 +51,15 @@
     var key = element.data("sort-key");
     var direction = element.data("sort-direction");
     $("table").resourceTable("sort", key, direction);
+    return false;
+  });
+
+  $(".filter").change(function(){
+    var element = $(this);
+    var key = element.attr("name");
+    var filter = {}
+    filter[key] = element.val();
+    $("table").resourceTable("filter", filter );
     return false;
   });
 

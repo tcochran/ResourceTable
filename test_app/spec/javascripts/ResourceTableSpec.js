@@ -176,13 +176,25 @@ describe ("ResourceTable sorting", function(){
     var resourceTable = new ResourceTable.Loader("some url", stubCallBack, $({}));
     spyOn(resourceTable.pagination, "generate");
     
-    
     spyOn(ResourceTable.Navigation, "change_hash");
     resourceTable.sort("name", "asc");
 
     expect(ResourceTable.Navigation.change_hash).toHaveBeenCalledWith("sort=name&sort_direction=asc");
 
   });
+});
 
+describe ("ResourceTable filtering", function(){
+  it ("should sort", function(){
 
+    var stubCallBack = jasmine.createSpy();
+    var resourceTable = new ResourceTable.Loader("some url", stubCallBack, $({}));
+    spyOn(resourceTable.pagination, "generate");
+    
+    spyOn(ResourceTable.Navigation, "change_hash");
+    resourceTable.filter({ "name": "book_name", "author": "tim" });
+
+    expect(ResourceTable.Navigation.change_hash).toHaveBeenCalledWith("filter[name]=book_name&filter[author]=tim");
+
+  });
 });

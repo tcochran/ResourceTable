@@ -20,6 +20,10 @@
 
     sort: function(name, direction) {
       this.table.sort(name, direction);
+    },
+
+    filter: function(filter) {
+      this.table.filter(filter);
     }
 
   });
@@ -27,6 +31,13 @@
 }( jQuery ) );
 
 ResourceTable = {}
+ResourceTable.FilterTemplate = "filter[{{ key }}]";
+
+
+_.templateSettings = {
+  interpolate : /\{\{(.+?)\}\}/g
+};
+
 
 ResourceTable.Loader = function(url, renderDataCallBack, paginationElement ){
   var self = this;
@@ -34,6 +45,7 @@ ResourceTable.Loader = function(url, renderDataCallBack, paginationElement ){
   this.renderDataCallBack = renderDataCallBack;
   this.pagination = new ResourceTable.Pagination();
   this.paginationElement = paginationElement;
+  this.filterTemplate = _.template(ResourceTable.FilterTemplate);
   
 
   ResourceTable.Loader.listenToAnchorChangedEvents(function(){
@@ -45,6 +57,16 @@ ResourceTable.Loader = function(url, renderDataCallBack, paginationElement ){
 
 ResourceTable.Loader.prototype.sort = function(key, direction) { 
     this.url.change_hash({sort:key, sort_direction: direction});
+}
+
+ResourceTable.Loader.prototype.filter = function(filterHash) { 
+  var filterHashWithPrefix = {};
+  var self = this;
+  _.each(filterHash, function(value, key) {
+    filterHashWithPrefix[self.filterTemplate({key: key})] = value;
+  });
+
+  this.url.change_hash(filterHashWithPrefix);
 }
 
 ResourceTable.Loader.prototype.change_page = function(page_num) { 
