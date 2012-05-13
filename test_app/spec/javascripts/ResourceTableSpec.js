@@ -185,7 +185,7 @@ describe ("ResourceTable sorting", function(){
 });
 
 describe ("ResourceTable filtering", function(){
-  it ("should sort", function(){
+  it ("should filter", function(){
 
     var stubCallBack = jasmine.createSpy();
     var resourceTable = new ResourceTable.Loader("some url", stubCallBack, $({}));
