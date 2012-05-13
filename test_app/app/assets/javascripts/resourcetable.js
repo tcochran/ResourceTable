@@ -7,11 +7,11 @@ _.templateSettings = {
 };
 
 
-ResourceTable.Loader = function(url, renderDataCallBack, renderPaginationCallBack){
+ResourceTable.Loader = function(url, renderDataCallBack, renderViewCallBack){
   var self = this;
   this.url = new ResourceTable.Url(url, window.location.href);
   this.renderDataCallBack = renderDataCallBack;
-  this.renderPaginationCallBack = renderPaginationCallBack;
+  this.renderViewCallBack = renderViewCallBack;
   this.pagination = new ResourceTable.Pagination();
   this.filterTemplate = _.template(ResourceTable.FilterTemplate);
   
@@ -46,7 +46,8 @@ ResourceTable.Loader.prototype.load = function() {
   $.getJSON(this.url.hash_to_url(), null, function(result){ 
     self.renderDataCallBack(result.data);
     var paginationResults = self.pagination.generate(result);
-    self.renderPaginationCallBack(paginationResults);
+    var sortState = { key: self.url.query.sort, direction: self.url.query.sort_direction };
+    self.renderViewCallBack(paginationResults, sortState);
   });
 };
 

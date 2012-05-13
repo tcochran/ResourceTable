@@ -10,18 +10,20 @@ describe("ResourceTable loader ", function(){
   });
 
   it("Should generate pagination links", function(){
-    var resourceTable = new ResourceTable.Loader("some url", function() { }, $({}) );
-    spyOn(resourceTable.pagination, "generate")
+    var stubViewCallBack = jasmine.createSpy();
+    var resourceTable = new ResourceTable.Loader("some url", function() { }, stubViewCallBack);
+    spyOn(resourceTable.pagination, "generate").andReturn("something")
     spyOn(jQuery, "getJSON").andCallFake(function(value, data, callBack) { callBack([1, 2]); });
 
     resourceTable.load();
     expect(resourceTable.pagination.generate).toHaveBeenCalledWith([1, 2])
-  
+    expect(stubViewCallBack).toHaveBeenCalledWith("something", jasmine.any(Object));
+    
   });
 
   it("should render rows via callback", function(){
     var stubCallBack = jasmine.createSpy();
-    var resourceTable = new ResourceTable.Loader("some url", stubCallBack, $({}));
+    var resourceTable = new ResourceTable.Loader("some url", stubCallBack, function(){});
     spyOn(resourceTable.pagination, "generate")
     
     spyOn(jQuery, "getJSON").andCallFake(function(value, data, callBack) { callBack({data: [1, 2]}); });
@@ -124,28 +126,6 @@ describe("ResourceTable pagination", function(){
     expect(links[5]).toEqual({name: "10", disabled: true, link: 10 });
 
   });
-
-});
-
-describe("ResourceTable pagination render", function(){ 
-  it("should render enabled links as a tags", function(){
-    var element = $("<div>");
-    var summary = [{name: "test link", link: 1, disabled: false } ]
-    ResourceTable.PaginationLinks.render(element, summary, "some_url");
-  
-    expect(element.children().size()).toBe(1);
-    expect(element.find("> a:first").html()).toBe("test link");
-  }); 
-
-
-  it("should render disabled links as spans", function(){
-    var element = $("<div>");
-    var summary = [{name: "test span", link: 1, disabled: true } ]
-    ResourceTable.PaginationLinks.render(element, summary, "some_url");
-  
-    expect(element.children().size()).toBe(1);
-    expect(element.find("> span:first").html()).toBe("test span");
-  }); 
 
 });
 

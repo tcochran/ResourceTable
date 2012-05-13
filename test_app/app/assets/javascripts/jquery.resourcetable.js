@@ -16,7 +16,7 @@
 
     _create: function() {
       var self = this;
-      this.table = new ResourceTable.Loader(this.options.url, this.options.renderDataCallBack, function(paginationSummary) { self._renderPagination(paginationSummary) });
+      this.table = new ResourceTable.Loader(this.options.url, this.options.renderDataCallBack, function(paginationSummary, sort) { self._renderView(paginationSummary, sort) });
       this.table.load();
 
       self.options.sortElements.click(function(){
@@ -41,10 +41,14 @@
       } else {          
         var sortDirection = "ascending";
       }
-
-      self.options.sortElements.toggleClass("sort-ascending sort-descending", false);
-      element.addClass("sort-" + sortDirection); 
+      
       self.sort(element.attr("name"), sortDirection);
+    },
+
+    _renderView: function(paginationSummary, sort) {
+      var self = this;
+      self._renderPagination(paginationSummary)
+      self._renderSort(sort);
     },
 
     _renderPagination: function(paginationSummary) {
@@ -60,8 +64,16 @@
           paginationElement.append($("<span>").html(paginationLink.name));
         }
       });
-    }
+    },
 
+    _renderSort: function(sort) {
+      if (sort.key == undefined)
+        return;
+      this.options.sortElements.toggleClass("sort-ascending sort-descending", false);
+      //TODO - refactor this line
+      var sortElement =  _.find(this.options.sortElements, function(elem) { return $(elem).is("[name='" + sort.key + "']")});
+      $(sortElement).addClass("sort-" + sort.direction); 
+    }
   });
 
 }( jQuery ) );
