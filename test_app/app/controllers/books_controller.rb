@@ -12,7 +12,8 @@ class BooksController < ApplicationController
         conditions = params[:filter]
         page = (params[:page] || 1).to_i
         offset = (page - 1) * PageSize
-        order = "#{params[:sort] || "name"} #{params[:sort_direction] || "asc"}"
+        sort_direction = params[:sort_direction] == "descending" ? "DESC" : "ASC";
+        order = "#{params[:sort] || "name"} #{sort_direction}"
 
 
         @books = Book.all(:limit => PageSize, :offset => offset, :order => order, :conditions => conditions)

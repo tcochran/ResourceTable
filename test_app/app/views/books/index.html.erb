@@ -1,14 +1,11 @@
 <h2>Books</h2>
 
-<a href="" class="sort" data-sort-direction="ASC" data-sort-key="name" >sort by name</a><br/>
-<a href="" class="sort" data-sort-direction="ASC" data-sort-key="author" >sort by author</a><br/>
-
 <table>
   <thead>
-    <th>Name</th>
-    <th>Author</th>
-    <th>Subject</th>
-    <th>Quantity</th>
+    <th ><a href="" name='name' class="sorting" >Name</a></th>
+    <th><a href="" name='author' class="sorting" >Author</th>
+    <th><a href="" name='subject' class="sorting" >Subject</th>
+    <th><a href="" name='quantity' class="sorting" >Quantity</th>
   </thead>
   <tbody>
 
@@ -43,15 +40,8 @@
       $("tbody").empty();
       _.each(data, function(row) { $("tbody").append(compiled(row)) });
     },
-    paginationElement: $("#pagination-summary")
-  });
-
-  $(".sort").click(function(){
-    var element = $(this);
-    var key = element.data("sort-key");
-    var direction = element.data("sort-direction");
-    $("table").resourceTable("sort", key, direction);
-    return false;
+    paginationElement: $("#pagination-summary"),
+    sortElements: $(".sorting")
   });
 
   $(".filter").change(function(){

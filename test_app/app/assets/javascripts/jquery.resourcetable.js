@@ -10,13 +10,19 @@
     options: { 
       url: "",
       renderDataCallBack: function(data){},
-      paginationElement: $({})
+      paginationElement: $({}),
+      sortElements: $({})
     },
 
     _create: function() {
       var self = this;
       this.table = new ResourceTable.Loader(this.options.url, this.options.renderDataCallBack, function(paginationSummary) { self._renderPagination(paginationSummary) });
       this.table.load();
+
+      self.options.sortElements.click(function(){
+        self._toggleSort($(this));
+        return false;
+      });
     },
 
     sort: function(name, direction) {
@@ -26,6 +32,20 @@
     filter: function(filter) {
       this.table.filter(filter);
     }, 
+
+    _toggleSort: function(element)
+    {
+      var self = this;
+      if (element.hasClass("sort-ascending")) {
+        var sortDirection = "descending";
+      } else {          
+        var sortDirection = "ascending";
+      }
+
+      self.options.sortElements.toggleClass("sort-ascending sort-descending", false);
+      element.addClass("sort-" + sortDirection); 
+      self.sort(element.attr("name"), sortDirection);
+    },
 
     _renderPagination: function(paginationSummary) {
       var self = this;
@@ -41,8 +61,6 @@
         }
       });
     }
-
-
 
   });
 

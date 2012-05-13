@@ -115,8 +115,6 @@ ResourceTable.Pagination.prototype.generate = function(results) {
   return links;
 };
 
-
-
 ResourceTable.Url = function(base_url, full_url) { 
   this.base_url = base_url;
   this.query = this.parse_hash(full_url);
