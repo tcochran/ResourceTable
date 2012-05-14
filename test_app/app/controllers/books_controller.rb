@@ -7,6 +7,7 @@ class BooksController < ApplicationController
     respond_to do |format|
       format.html do 
         @authors = Book.find(:all, :select => "author", :group => "author").map(&:author)
+        @subjects = Book.find(:all, :select => "subject", :group => "subject").map(&:subject)
       end
       format.json do 
         conditions = params[:filter]

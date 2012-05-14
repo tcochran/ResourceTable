@@ -45,9 +45,9 @@ ResourceTable.Loader.prototype.load = function() {
 
   $.getJSON(this.url.hash_to_url(), null, function(result){ 
     self.renderDataCallBack(result.data);
-    var paginationResults = self.pagination.generate(result);
-    var sortState = { key: self.url.query.sort, direction: self.url.query.sort_direction };
-    self.renderViewCallBack(paginationResults, sortState);
+    var currentState = ResourceTable.ParseUrlRailsStyle(self.url.query);
+    currentState.paginationSummary = self.pagination.generate(result);
+    self.renderViewCallBack(currentState);
   });
 };
 
@@ -120,6 +120,23 @@ ResourceTable.Url = function(base_url, full_url) {
   this.base_url = base_url;
   this.query = this.parse_hash(full_url);
 }
+
+ResourceTable.ParseUrlRailsStyle = function (urlHash) {
+  var filter = {};
+  _.each(urlHash, function(value, key) {
+    var match = key.match(/^filter\[(\w+)\]$/)
+    if (match != null)
+    {
+      filter[match[1]] = value;
+    }
+  });
+  var currentState = {
+    page: urlHash.page,
+    sort: { key: urlHash.sort, direction: urlHash.sort_direction },
+    filter: filter
+  };
+  return currentState;
+};
 
 ResourceTable.Url.prototype.parse_hash = function(url) {
   var matches = url.match(/([&#])([^#&=]+)=?([^&#]+)/g);

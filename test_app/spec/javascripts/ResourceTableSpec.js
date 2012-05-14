@@ -16,9 +16,8 @@ describe("ResourceTable loader ", function(){
     spyOn(jQuery, "getJSON").andCallFake(function(value, data, callBack) { callBack([1, 2]); });
 
     resourceTable.load();
-    expect(resourceTable.pagination.generate).toHaveBeenCalledWith([1, 2])
-    expect(stubViewCallBack).toHaveBeenCalledWith("something", jasmine.any(Object));
-    
+    expect(resourceTable.pagination.generate).toHaveBeenCalledWith([1, 2])  
+    expect(stubViewCallBack.calls[0].args[0].paginationSummary).toEqual("something");
   });
 
   it("should render rows via callback", function(){
@@ -30,7 +29,6 @@ describe("ResourceTable loader ", function(){
     resourceTable.load();
 
     expect(stubCallBack.calls[0].args).toEqual([[1, 2]])
-  
   });
 
 });
@@ -178,3 +176,23 @@ describe ("ResourceTable filtering", function(){
 
   });
 });
+
+describe ("ResourceTable Url parsing", function(){
+  it ("should parse state from url using rails style filters", function(){
+    var urlHash = {
+      page: 1,
+      sort: "name",
+      sort_direction: "ascending",
+      "filter[name]": "book name",
+      "filter[author]": "tim"
+    }
+
+    var tableState = ResourceTable.ParseUrlRailsStyle(urlHash);
+
+    expect(tableState.page).toBe(1);
+    expect(tableState.sort).toEqual({ key: "name", direction: "ascending"});
+    expect(tableState.filter).toEqual({ name: "book name", author: "tim"});
+
+  });
+
+})

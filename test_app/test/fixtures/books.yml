@@ -31,7 +31,7 @@ four:
 
 five: 
   name: Pride and Prejudice
-  subject: Courtship
+  subject: Other
   author: Jane Austin
   quantity: 6
 
@@ -46,3 +46,9 @@ seven:
   subject: Courtship
   author: Jane Austin
   quantity: 1
+
+eight: 
+  name: Awesomeness
+  subject: Courtship
+  author: Tim
+  quantity: 100

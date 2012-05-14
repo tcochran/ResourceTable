@@ -16,11 +16,13 @@
   <%= options_for_select [""] + @authors %>
 </select>
 
-
+<select name="subject" class="filter">
+  <%= options_for_select [""] + @subjects %>
+</select>
 
 <div id="pagination-summary"></div>
 
-<script id="rubbish" type='template'>
+<script id="rowTemplate" type='template'>
   <tr>
     <td>{{ name }}</td>
     <td>{{ author }}</td>
@@ -30,9 +32,7 @@
 </script>
 
 <script>
-  var compiled = _.template($("#rubbish").html());
-
-
+  var compiled = _.template($("#rowTemplate").html());
 
   $("table").resourceTable( { 
     url: "http://localhost:3000/books", 
@@ -41,19 +41,18 @@
       _.each(data, function(row) { $("tbody").append(compiled(row)) });
     },
     paginationElement: $("#pagination-summary"),
-    sortElements: $(".sorting")
+    sortElements: $(".sorting"),
+    filterElements: $(".filter")
   });
 
-  $(".filter").change(function(){
-    var element = $(this);
-    var key = element.attr("name");
-    var filter = {}
-    filter[key] = element.val();
-    $("table").resourceTable("filter", filter );
-    return false;
-  });
-
-
+  // $(".filter").change(function(){
+  //   var element = $(this);
+  //   var key = element.attr("name");
+  //   var filter = {}
+  //   filter[key] = element.val();
+  //   $("table").resourceTable("filter", filter );
+  //   return false;
+  // });
 
 </script>
 
