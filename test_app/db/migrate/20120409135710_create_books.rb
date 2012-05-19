@@ -4,6 +4,7 @@ class CreateBooks < ActiveRecord::Migration
       t.string :name
       t.string :author
       t.string :subject
+      t.string :language
       t.integer :quantity
       t.timestamps
     end

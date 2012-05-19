@@ -1,12 +1,12 @@
 class BooksController < ApplicationController
 
-  PageSize = 2
+  PageSize = 100
 	def index
 
 
     respond_to do |format|
       format.html do 
-        @authors = Book.find(:all, :select => "author", :group => "author").map(&:author)
+        @authors = Book.find(:all, :select => "author", :group => "author", ).map(&:author)
         @subjects = Book.find(:all, :select => "subject", :group => "subject").map(&:subject)
       end
       format.json do 

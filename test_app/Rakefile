@@ -5,3 +5,29 @@
 require File.expand_path('../config/application', __FILE__)
 
 TestApp::Application.load_tasks
+
+require 'nokogiri'
+require 'open-uri'
+
+desc "load catalog"
+task :load_catalog => :environment do
+	#xml = File.read("tmp/catalog.rdf")	
+	
+	doc = Nokogiri::XML(File.open("tmp/catalog.rdf"))
+
+	r = Random.new
+	doc.xpath("//pgterms:etext").each do |book_node|
+		name = content_or_blank(book_node.at_xpath(".//dc:title"))
+		creator = content_or_blank(book_node.at_xpath(".//dc:creator"))
+		value =  content_or_blank(book_node.at_xpath(".//dc:subject//rdf:value"))
+
+		language =  content_or_blank(book_node.at_xpath(".//dc:language"))
+
+		Book.create!(:name => name, :author => creator, :subject => value, :quantity => r.rand(1...100))
+	end
+end
+
+def content_or_blank node
+	return "" if node.nil?
+	node.content
+end

@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(:version => 20120409135710) do
     t.string   "name"
     t.string   "author"
     t.string   "subject"
+    t.string   "language"
     t.integer  "quantity"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
