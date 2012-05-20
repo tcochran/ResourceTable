@@ -12,22 +12,31 @@ require 'open-uri'
 desc "load catalog"
 task :load_catalog => :environment do
 	#xml = File.read("tmp/catalog.rdf")	
-	
+
+	Book.destroy_all
+	Author.destroy_all
+	Subject.destroy_all
+	Language.destroy_all
 	doc = Nokogiri::XML(File.open("tmp/catalog.rdf"))
 
 	r = Random.new
 	doc.xpath("//pgterms:etext").each do |book_node|
 		name = content_or_blank(book_node.at_xpath(".//dc:title"))
-		creator = content_or_blank(book_node.at_xpath(".//dc:creator"))
-		value =  content_or_blank(book_node.at_xpath(".//dc:subject//rdf:value"))
+		author_name = content_or_blank(book_node.at_xpath(".//dc:creator"))
+		subject_name =  content_or_blank(book_node.at_xpath(".//dc:subject//rdf:value"))
+		language_name =  content_or_blank(book_node.at_xpath(".//dc:language"))
 
-		language =  content_or_blank(book_node.at_xpath(".//dc:language"))
+		next if (author_name.nil? || subject_name.nil? || language_name.nil? || name.nil? )
 
-		Book.create!(:name => name, :author => creator, :subject => value, :quantity => r.rand(1...100))
+		author = Author.find_or_create_by_name(author_name)
+		subject = Subject.find_or_create_by_name(subject_name)
+		language = Language.find_or_create_by_name(language_name)
+
+		Book.create!(:name => name, :author => author, :subject => subject, :language => language, :quantity => r.rand(1...100))
 	end
 end
 
 def content_or_blank node
-	return "" if node.nil?
-	node.content
+	return nil if node.nil?
+	node.content.strip
 end

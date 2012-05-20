@@ -3,8 +3,9 @@
 <table>
   <thead>
     <th ><a href="" name='name' class="sorting" >Name</a></th>
-    <th><a href="" name='author' class="sorting" >Author</th>
-    <th><a href="" name='subject' class="sorting" >Subject</th>
+    <th><a href="" name='authors.name' class="sorting" >Author</th>
+    <th><a href="" name='subjects.name' class="sorting" >Subject</th>
+    <th><a href="" name='languages.name' class="sorting" >Language</th>
     <th><a href="" name='quantity' class="sorting" >Quantity</th>
   </thead>
   <tbody>
@@ -12,12 +13,16 @@
   </tbody>
 </table>
 
-<select name="author" class="filter">
+<select name="author_id" class="filter">
   <%= options_for_select [""] + @authors %>
 </select>
 
-<select name="subject" class="filter">
+<select name="subject_id" class="filter">
   <%= options_for_select [""] + @subjects %>
+</select>
+
+<select name="language_id" class="filter">
+  <%= options_for_select [""] + @languages %>
 </select>
 
 <div id="pagination-summary"></div>
@@ -25,8 +30,9 @@
 <script id="rowTemplate" type='template'>
   <tr>
     <td>{{ name }}</td>
-    <td>{{ author }}</td>
-    <td>{{ subject }}</td>
+    <td>{{ author.name }}</td>
+    <td>{{ subject.name }}</td>
+    <td>{{ language.name }}</td>
     <td>{{ quantity }}</td>
   </tr>
 </script>

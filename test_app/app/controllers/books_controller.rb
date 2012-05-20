@@ -1,13 +1,14 @@
 class BooksController < ApplicationController
 
-  PageSize = 100
+  PageSize = 20
 	def index
 
 
     respond_to do |format|
       format.html do 
-        @authors = Book.find(:all, :select => "author", :group => "author", ).map(&:author)
-        @subjects = Book.find(:all, :select => "subject", :group => "subject").map(&:subject)
+        @authors = Author.find(:all, :order => "name ASC").map {|author| [author.name[0, 30], author.id]  }
+        @subjects = Subject.find(:all, :order => "name ASC").map {|subject| [subject.name[0, 30], subject.id]  }
+        @languages = Language.find(:all, :order => "name ASC").map {|language| [language.name[0, 30], language.id]  }
       end
       format.json do 
         conditions = params[:filter]
@@ -17,7 +18,7 @@ class BooksController < ApplicationController
         order = "#{params[:sort] || "name"} #{sort_direction}"
 
 
-        @books = Book.all(:limit => PageSize, :offset => offset, :order => order, :conditions => conditions)
+        @books = Book.includes(:author, :language, :subject).all(:limit => PageSize, :offset => offset, :order => order, :conditions => conditions, :include => [])
         
         results = {data: @books, page: page, total: Book.count(:conditions => conditions), page_size: PageSize }
 
