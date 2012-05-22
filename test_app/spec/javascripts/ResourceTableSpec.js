@@ -76,13 +76,15 @@ describe("ResourceTable pagination", function(){
     var pagination = new ResourceTable.Pagination();
     var links = pagination.generate(results);
 
-    expect(links.length).toEqual(7)
+    expect(links.length).toEqual(9)
 
     expect(links[1]).toEqual({name: "1", disabled: true, link: 1 });
     expect(links[2]).toEqual({name: "2", disabled: false, link: 2 });
     expect(links[3]).toEqual({name: "3", disabled: false, link: 3 });
     expect(links[4]).toEqual({name: "4", disabled: false, link: 4 });
     expect(links[5]).toEqual({name: "5", disabled: false, link: 5 });
+    expect(links[6]).toEqual({name: "...", disabled: true, link: "" });
+    expect(links[7]).toEqual({name: "10", disabled: false, link: 10 });
 
   });
 
@@ -92,13 +94,17 @@ describe("ResourceTable pagination", function(){
     var pagination = new ResourceTable.Pagination();
     var links = pagination.generate(results);
 
-    expect(links.length).toEqual(7)
+    expect(links.length).toEqual(10)
+    console.log(links)
 
-    expect(links[1]).toEqual({name: "2", disabled: false, link: 2 });
-    expect(links[2]).toEqual({name: "3", disabled: false, link: 3 });
-    expect(links[3]).toEqual({name: "4", disabled: true, link: 4 });
-    expect(links[4]).toEqual({name: "5", disabled: false, link: 5 });
-    expect(links[5]).toEqual({name: "6", disabled: false, link: 6 });
+    expect(links[1]).toEqual({name: "1", disabled: false, link: 1 });
+    expect(links[2]).toEqual({name: "2", disabled: false, link: 2 });
+    expect(links[3]).toEqual({name: "3", disabled: false, link: 3 });
+    expect(links[4]).toEqual({name: "4", disabled: true, link: 4 });
+    expect(links[5]).toEqual({name: "5", disabled: false, link: 5 });
+    expect(links[6]).toEqual({name: "6", disabled: false, link: 6 });
+    expect(links[7]).toEqual({name: "...", disabled: true, link: "" });
+    expect(links[8]).toEqual({name: "10", disabled: false, link: 10 });
 
   });
 
@@ -121,7 +127,7 @@ describe("ResourceTable pagination", function(){
     var pagination = new ResourceTable.Pagination();
     var links = pagination.generate(results);
 
-    expect(links[5]).toEqual({name: "10", disabled: true, link: 10 });
+    expect(links[7]).toEqual({name: "10", disabled: true, link: 10 });
 
   });
 

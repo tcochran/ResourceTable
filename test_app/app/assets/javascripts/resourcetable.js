@@ -72,7 +72,7 @@ ResourceTable.Loader.listenToAnchorChangedEvents = function(callBack) {
 };
 
 ResourceTable.Pagination = function() {
-  this.numOfLinks = 2;
+  this.numOfLinks = 1;
 };
 
 ResourceTable.Pagination.prototype._calculatefirstAndLastPage = function(results) {
@@ -104,11 +104,30 @@ ResourceTable.Pagination.prototype.generate = function(results) {
 
   var firstAndLastTuple = this._calculatefirstAndLastPage(results);
 
+  if (firstAndLastTuple[0] > 1)
+  {
+    
+    links.push({name: "1", link: 1, disabled:false});
+    if (firstAndLastTuple[0] > 2) {
+      links.push({name: "...", link: "", disabled:true});
+    }
+  }
+
   _.chain(_.range(firstAndLastTuple[0], (firstAndLastTuple[1] + 1))).each(function(page_num){
     links.push({name: page_num.toString(), link: page_num, disabled: page_num == results.page});
   });
 
   var isOnLastPage = firstAndLastTuple[1] == results.page;
+  var numPages = Math.ceil(results.total / results.page_size);
+
+  if (results.page != numPages && (firstAndLastTuple[1] < numPages ))
+  {
+    if ((firstAndLastTuple[1] + 1) < numPages) {
+      links.push({name: "...", link: "", disabled:true});
+    }
+
+    links.push({name: numPages.toString(), link: numPages, disabled:false});
+  }
   var nextLink = {name: "Next", link: results.page + 1, disabled: isOnLastPage};
 
   links.push(nextLink);

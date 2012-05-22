@@ -1,6 +1,4 @@
-<h2>Books</h2>
-
-<table>
+<table id="books-table" cellspacing=0px>
   <thead>
     <th ><a href="" name='name' class="sorting" >Name</a></th>
     <th><a href="" name='authors.name' class="sorting" >Author</th>
@@ -11,19 +9,32 @@
   <tbody>
 
   </tbody>
+  <tfoot>
+    <th></th>
+    <th>
+      <select name="author_id" class="filter">
+        <%= options_for_select [""] + @authors %>
+      </select>
+    </th>
+
+    <th>
+      <select name="subject_id" class="filter">
+        <%= options_for_select [""] + @subjects %>
+      </select>
+    </th>
+
+    <th>
+      <select name="language_id" class="filter">
+        <%= options_for_select [""] + @languages %>
+      </select>
+    </th>
+    <th></th>
+  </tfoot>
 </table>
 
-<select name="author_id" class="filter">
-  <%= options_for_select [""] + @authors %>
-</select>
 
-<select name="subject_id" class="filter">
-  <%= options_for_select [""] + @subjects %>
-</select>
 
-<select name="language_id" class="filter">
-  <%= options_for_select [""] + @languages %>
-</select>
+
 
 <div id="pagination-summary"></div>
 

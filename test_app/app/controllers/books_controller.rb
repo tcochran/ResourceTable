@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
 
-  PageSize = 20
+  PageSize = 100
 	def index
 
 
@@ -10,6 +10,7 @@ class BooksController < ApplicationController
         @subjects = Subject.find(:all, :order => "name ASC").map {|subject| [subject.name[0, 30], subject.id]  }
         @languages = Language.find(:all, :order => "name ASC").map {|language| [language.name[0, 30], language.id]  }
       end
+
       format.json do 
         conditions = params[:filter]
         page = (params[:page] || 1).to_i
@@ -20,7 +21,10 @@ class BooksController < ApplicationController
 
         @books = Book.includes(:author, :language, :subject).all(:limit => PageSize, :offset => offset, :order => order, :conditions => conditions, :include => [])
         
-        results = {data: @books, page: page, total: Book.count(:conditions => conditions), page_size: PageSize }
+        page = (params[:page] || 1).to_i
+        total_size = Book.count(:conditions => conditions)
+        page_size = (total_size / PageSize) + 1
+        results = {data: @books, page: page > page_size ? page_size : page, total: Book.count(:conditions => conditions), page_size: PageSize }
 
         render json: results 
       end

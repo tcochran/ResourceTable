@@ -2,4 +2,20 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#books-table { font-family: arial; }
+#books-table { font-family: Verdana; font-size: 12px; width: 100%;}
+
+#books-table td { background-color: #F7F7F7	; padding: 4px 6px;}
+#books-table { border-spacing: 10px 10px;}
+
+#books-table thead tr th { padding: 6px 10px; border-bottom: red 10px solid; }
+#books-table thead tr th a { color: black; text-decoration: none; font-size: 18px; text-transform: uppercase;}
+
+#books-table tfoot tr th { padding: 6px 10px; border-top: red 6px solid;}
+
+#pagination-summary { float: right; font-family: Verdana; font-size: 14px;}
+
+#pagination-summary a, #pagination-summary span { padding: 2px; color: black; text-decoration: none; font-size: 18px; text-transform: uppercase;}
+
+
+
+

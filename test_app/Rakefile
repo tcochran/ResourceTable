@@ -20,7 +20,7 @@ task :load_catalog => :environment do
 	doc = Nokogiri::XML(File.open("tmp/catalog.rdf"))
 
 	r = Random.new
-	doc.xpath("//pgterms:etext").each do |book_node|
+	doc.xpath("//pgterms:etext")[0, 1000].each do |book_node|
 		name = content_or_blank(book_node.at_xpath(".//dc:title"))
 		author_name = content_or_blank(book_node.at_xpath(".//dc:creator"))
 		subject_name =  content_or_blank(book_node.at_xpath(".//dc:subject//rdf:value"))
