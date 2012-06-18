@@ -36,6 +36,12 @@ task :load_catalog => :environment do
 	end
 end
 
+task :publish => :environment do 
+	system "cat app/assets/javascripts/resourcetable.js app/assets/javascripts/jquery.resourcetable.js > build/resourcetable.js"
+	system "java -jar lib/yuicompressor-2.4.7.jar build/resourcetable.js -o build/resourcetable.min.js"
+
+end
+
 def content_or_blank node
 	return nil if node.nil?
 	node.content.strip
