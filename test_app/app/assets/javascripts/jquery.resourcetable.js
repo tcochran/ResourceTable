@@ -50,7 +50,6 @@
 
     _renderView: function(currentState) {
       var self = this;
-      console.log(currentState);
       self._renderPagination(currentState.paginationSummary)
       self._renderSort(currentState.sort);
       self._renderFilters(currentState.filter);
