@@ -1,10 +1,5 @@
 ResourceTable = {}
-ResourceTable.FilterTemplate = "filter[{{ key }}]";
-
-
-_.templateSettings = {
-  interpolate : /\{\{(.+?)\}\}/g
-};
+ResourceTable.FilterTemplate = "filter[<%= key %>]";
 
 
 ResourceTable.Loader = function(url, renderDataCallBack, renderViewCallBack){
