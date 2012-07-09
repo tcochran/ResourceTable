@@ -2,13 +2,14 @@ ResourceTable = {}
 ResourceTable.FilterTemplate = "filter[<%= key %>]";
 
 
-ResourceTable.Loader = function(url, renderDataCallBack, renderViewCallBack){
+ResourceTable.Loader = function(url, renderDataCallBack, renderViewCallBack, defaultFilter){
   var self = this;
   this.url = new ResourceTable.Url(url, window.location.href);
   this.renderDataCallBack = renderDataCallBack;
   this.renderViewCallBack = renderViewCallBack;
   this.pagination = new ResourceTable.Pagination();
   this.filterTemplate = _.template(ResourceTable.FilterTemplate);
+  this.defaultFilter =  defaultFilter || {};
   
   ResourceTable.Loader.listenToAnchorChangedEvents(function(){
     self.url = new ResourceTable.Url(url, window.location.href);
@@ -37,8 +38,14 @@ ResourceTable.Loader.prototype.change_page = function(page_num) {
 
 ResourceTable.Loader.prototype.load = function() {
   var self = this;
+  var url = this.url.hash_to_url();
+  
+  if (!this.url.hasFilter())
+  {
+    this.filter(this.defaultFilter);
+  }
 
-  $.getJSON(this.url.hash_to_url(), null, function(result){ 
+  $.getJSON(url, null, function(result){ 
     self.renderDataCallBack(result.data);
     var currentState = ResourceTable.ParseUrlRailsStyle(self.url.query);
     currentState.paginationSummary = self.pagination.generate(result);
@@ -177,6 +184,11 @@ ResourceTable.Url.prototype.hash_to_url = function() {
   var url = this.base_url + "?";
   url += this.hash_to_query();
   return url;
+};
+
+ResourceTable.Url.prototype.hasFilter = function(){
+  return _.size(this.query);
+
 };
 
 ResourceTable.Navigation = {}

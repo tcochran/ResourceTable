@@ -40,15 +40,22 @@
 
 <script id="rowTemplate" type='template'>
   <tr>
-    <td><%= name %></td>
-    <td><%= author.name %></td>
-    <td><%= subject.name %></td>
-    <td><%= language.name %></td>
-    <td><%= quantity %></td>
+    <td>{{= name }}</td>
+    <td>{{= author.name }}</td>
+    <td>{{= subject.name }}</td>
+    <td>{{= language.name }}</td>
+    <td>{{= quantity }}</td>
   </tr>
 </script>
 
 <script>
+  ResourceTable.FilterTemplate = "filter[{{=key }}]";
+
+  _.templateSettings = {
+      interpolate: /\{\{\=(.+?)\}\}/g,
+      evaluate: /\{\{(.+?)\}\}/g
+  };
+
   var compiled = _.template($("#rowTemplate").html());
 
   $("table").resourceTable( { 

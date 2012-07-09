@@ -16,7 +16,9 @@
 
     _create: function() {
       var self = this;
-      this.table = new ResourceTable.Loader(this.options.url, this.options.renderDataCallBack, function(currentState) { self._renderView(currentState) });
+      this.filters = new ResourceTableView.Filters(self.options.filterElements, self);
+
+      this.table = new ResourceTable.Loader(this.options.url, this.options.renderDataCallBack, function(currentState) { self._renderView(currentState) }, this.filters.currentState());
       this.table.load();
 
       self.options.sortElements.click(function(){
@@ -25,7 +27,7 @@
       });
 
 
-      this.filters = new ResourceTableView.Filters(self.options.filterElements, self);
+      
     },
 
     sort: function(name, direction) {
@@ -117,6 +119,15 @@ ResourceTableView.Filters.prototype.setFilterValues = function(filterValues) {
   });
 };
 
+ResourceTableView.Filters.prototype.currentState = function(filterValues) {
+  var self = this;
+  var currentState = {};
+  _.each(filterValues, function(value, key){
+     currentState[key] = self.filters[key].getValue(value); 
+  });
+  return currentState;
+};
+
 
 ResourceTableView.SelectFilter = function(key, element, resourceTable) {
   var self = this;
@@ -134,3 +145,6 @@ ResourceTableView.SelectFilter.prototype.setValue = function(value){
   this.element.val(value);
 };
 
+ResourceTableView.SelectFilter.prototype.getValue = function(value){
+  this.element.val();
+};
