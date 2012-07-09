@@ -40,9 +40,9 @@ ResourceTable.Loader.prototype.load = function() {
   var self = this;
   var url = this.url.hash_to_url();
   
-  if (!this.url.hasFilter())
-  {
+  if (!this.url.hasFilter()) {
     this.filter(this.defaultFilter);
+    return;
   }
 
   $.getJSON(url, null, function(result){ 
