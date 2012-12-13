@@ -12,7 +12,12 @@ class BooksController < ApplicationController
       end
 
       format.json do 
-        conditions = params[:filter]
+        filter = (params[:filter] || {}).inject({}) do |newFilter, kv| 
+          newFilter[kv[0]] = kv[1] if kv[1] != ""
+          newFilter
+        end
+
+        conditions = filter
         page = (params[:page] || 1).to_i
         offset = (page - 1) * PageSize
         sort_direction = params[:sort_direction] == "descending" ? "DESC" : "ASC";

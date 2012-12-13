@@ -60,15 +60,16 @@
 
   $("table").resourceTable( { 
     url: "http://localhost:3000/books", 
-    renderDataCallBack: function(data) { 
+    renderDataCallBack: function(results) { 
       $("tbody").empty();
-      _.each(data, function(row) { $("tbody").append(compiled(row)) });
+      _.each(results.data, function(row) { $("tbody").append(compiled(row)) });
     },
     paginationElement: $("#pagination-summary"),
     sortElements: $(".sorting"),
     filterElements: $(".filter")
   });
 
+  $("table").resourceTable("load");
   // $(".filter").change(function(){
   //   var element = $(this);
   //   var key = element.attr("name");

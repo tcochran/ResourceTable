@@ -95,7 +95,6 @@ describe("ResourceTable pagination", function(){
     var links = pagination.generate(results);
 
     expect(links.length).toEqual(10)
-    console.log(links)
 
     expect(links[1]).toEqual({name: "1", disabled: false, link: 1 });
     expect(links[2]).toEqual({name: "2", disabled: false, link: 2 });

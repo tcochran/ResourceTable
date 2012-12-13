@@ -11,7 +11,6 @@ require 'open-uri'
 
 desc "load catalog"
 task :load_catalog => :environment do
-	#xml = File.read("tmp/catalog.rdf")	
 
 	Book.destroy_all
 	Author.destroy_all
