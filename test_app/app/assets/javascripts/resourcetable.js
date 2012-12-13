@@ -81,9 +81,6 @@ ResourceTable.Loader.prototype.load = function () {
 };
 
 
-
-
-
 ResourceTable.Navigation = { };
 ResourceTable.Navigation.change_hash = function (hash) {
     window.location.hash = hash;

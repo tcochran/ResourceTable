@@ -36,7 +36,7 @@ task :load_catalog => :environment do
 end
 
 task :publish => :environment do 
-	system "cat app/assets/javascripts/resourcetable.js app/assets/javascripts/jquery.resourcetable.js > ../lib/resourcetable.js"
+	system "cat app/assets/javascripts/resourcetable.js app/assets/javascripts/datasource.js app/assets/javascripts/jquery.resourcetable.js  > ../lib/resourcetable.js"
 	system "java -jar lib/yuicompressor-2.4.7.jar ../lib/resourcetable.js -o ../lib/resourcetable.min.js"
 
 end
