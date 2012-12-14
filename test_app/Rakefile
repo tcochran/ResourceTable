@@ -16,7 +16,7 @@ task :load_catalog => :environment do
 	Author.destroy_all
 	Subject.destroy_all
 	Language.destroy_all
-	doc = Nokogiri::XML(File.open("tmp/catalog.rdf"))
+	doc = Nokogiri::XML(File.open("test/catalog.rdf"))
 
 	r = Random.new
 	doc.xpath("//pgterms:etext")[0, 1000].each do |book_node|
@@ -36,7 +36,13 @@ task :load_catalog => :environment do
 end
 
 task :publish => :environment do 
-	system "cat app/assets/javascripts/resourcetable.js app/assets/javascripts/datasource.js app/assets/javascripts/jquery.resourcetable.js  > ../lib/resourcetable.js"
+
+	files = ["resourcetable.js","pagination.js", "state.js", "datasource.js", "jquery.resourcetable.js" ]
+	command = "cat "
+	command += files.map {|file_name| "app/assets/javascripts/#{file_name}"}.join(" ")
+	command += "  > ../lib/resourcetable.js"
+
+	system command
 	system "java -jar lib/yuicompressor-2.4.7.jar ../lib/resourcetable.js -o ../lib/resourcetable.min.js"
 
 end

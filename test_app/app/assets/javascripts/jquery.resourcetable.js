@@ -1,44 +1,42 @@
-// ResourceTable.js 0.1.0
-// (c) Timothy Cochran 2012
-// https://github.com/tcochran/Resource-Table
-
-// jquery widget
-
 (function ($) {
     $.widget("ui.resourceTable", {
         options: {
             url: "",
-            renderDataCallBack: function (data) { },
+            renderDataCallBack: function (data, currentState) { },
             paginationElement: $({}),
             sortElements: $({}),
             filterChanged: function (filter) { },
             failureBackBack: function (failure) { },
-            stateMethod: "hash",
+            stateMethod: "memory",
             defaultSort: {}
         },
 
         _create: function () {
             var self = this;
-            this.filters = new ResourceTableView.Filters(self.options.filterElements, self);
-            this.table = new ResourceTable.Loader(this.options.url, this.options.renderDataCallBack,
-                function (currentState) {
-                     self._renderView(currentState);
-                },
-                this.filters.currentState(),
-                this.options.defaultSort,
-                
-                this.options.beforeDataLoad,
-                this.options.afterDataLoad,
 
-                this.options.failureCallBack, 
-                ResourceTable.StateMethods[this.options.stateMethod]);
+            this.filters = new ResourceTableView.Filters(self.options.filterElements, self);
+
+            var resourceTableOptions = {
+                baseUrl: self.options.url,
+
+                beforeLoad: self.options.beforeDataLoad,
+                onLoad: function(data, currentState) {
+                    self._renderView(currentState);
+                    self.options.renderDataCallBack(data, currentState);
+                },
+                afterLoad: self.options.afterDataLoad,
+                defaultSort: self.options.defaultSort,
+                defaultFilter: self.filters.currentState(),
+                stateMethod: ResourceTable.StateMethods[self.options.stateMethod]
+            };
+
+            self.table = new ResourceTable.Loader(resourceTableOptions);
 
             self._renderFilters(this.table.currentState().filter);
             self.options.sortElements.click(function () {
                 self._toggleSort($(this));
                 return false;
             });
-            
         },
 
         sort: function (name, direction) {
@@ -162,7 +160,6 @@ ResourceTableView.DatePickerFilter = function (key, element, resourceTable) {
     this.element = element;
     this.resourceTable = resourceTable;
 
-    //ToDo: Lav/Sam. Added Blur to make tab out work for IE8. If there is a better solution then we need to change this.
     var filterTable = function () {
         var filter = {};
         filter[key] = element.val();

@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
 
-  PageSize = 100
+  PageSize = 30
 	def index
 
 
@@ -19,17 +19,21 @@ class BooksController < ApplicationController
 
         conditions = filter
         page = (params[:page] || 1).to_i
-        offset = (page - 1) * PageSize
+        
         sort_direction = params[:sort_direction] == "descending" ? "DESC" : "ASC";
         order = "#{params[:sort] || "name"} #{sort_direction}"
 
 
-        @books = Book.includes(:author, :language, :subject).all(:limit => PageSize, :offset => offset, :order => order, :conditions => conditions, :include => [])
-        
-        page = (params[:page] || 1).to_i
         total_size = Book.count(:conditions => conditions)
         page_size = (total_size / PageSize) + 1
-        results = {data: @books, page: page > page_size ? page_size : page, total: Book.count(:conditions => conditions), page_size: PageSize }
+        page = page > page_size ? page_size : page;
+        offset = (page - 1) * PageSize
+
+        @books = Book.includes(:author, :language, :subject).all(:limit => PageSize, :offset => offset, :order => order, :conditions => conditions, :include => [])
+        
+        
+        
+        results = {data: @books, page: page, total: Book.count(:conditions => conditions), page_size: PageSize }
 
         render json: results 
       end

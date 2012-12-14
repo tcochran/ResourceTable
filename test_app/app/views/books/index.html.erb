@@ -1,6 +1,6 @@
 <table id="books-table" cellspacing=0px>
   <thead>
-    <th ><a href="" name='name' class="sorting" >Name</a></th>
+    <th ><a href="" name='name' class="name sorting" >Name</a></th>
     <th><a href="" name='authors.name' class="sorting" >Author</th>
     <th><a href="" name='subjects.name' class="sorting" >Subject</th>
     <th><a href="" name='languages.name' class="sorting" >Language</th>
@@ -10,7 +10,7 @@
 
   </tbody>
   <tfoot>
-    <th></th>
+    <th class="name"></th>
     <th>
       <select name="author_id" class="filter">
         <%= options_for_select [""] + @authors %>
@@ -40,7 +40,7 @@
 
 <script id="rowTemplate" type='template'>
   <tr>
-    <td>{{= name }}</td>
+    <td class="name">{{= name }}</td>
     <td>{{= author.name }}</td>
     <td>{{= subject.name }}</td>
     <td>{{= language.name }}</td>
