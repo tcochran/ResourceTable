@@ -7,7 +7,7 @@
             sortElements: $({}),
             filterChanged: function (filter) { },
             failureBackBack: function (failure) { },
-            stateMethod: "memory",
+            stateMethod: "hash",
             defaultSort: {}
         },
 
