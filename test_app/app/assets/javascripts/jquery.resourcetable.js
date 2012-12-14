@@ -73,7 +73,7 @@
                 if (!paginationLink.disabled) {
                     var link = $("<a>", { href: "" }).html(paginationLink.name);
                     paginationElement.append(link);
-                    link.click(function () { self.table.change_page(paginationLink.link); return false; });
+                    link.click(function () { self.table.changePage(paginationLink.link); return false; });
                 } else {
                     paginationElement.append($("<span>").html(paginationLink.name));
                 }

@@ -2,7 +2,9 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#books-table { font-family: Arial; font-size: 12px; width: 100%;}
+#books-table, #pagination-summary { font-family: Arial; font-size: 12px; }
+
+#books-table { width: 100%;}
 
 #books-table td.name, #books-table th.name { width: 400px; white-space: nowrap; display: inline-block; overflow: hidden;	}
 #pagination-summary { float: right; }
