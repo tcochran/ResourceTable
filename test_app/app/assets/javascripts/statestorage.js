@@ -7,16 +7,16 @@ ResourceTable.Navigation.change_hash = function (hash) {
     window.location.hash = hash;
 };
 
-ResourceTable.HashUrlState = function () {
+ResourceTable.HashUrlStateStorage = function () {
     this.refresh();
 };
 
-ResourceTable.HashUrlState.prototype.refresh = function () {
+ResourceTable.HashUrlStateStorage.prototype.refresh = function () {
     var currentUrl = window.location.href;
     this.currentState = this.parse_hash(currentUrl);
 };
 
-ResourceTable.HashUrlState.prototype.parse_hash = function (url) {
+ResourceTable.HashUrlStateStorage.prototype.parse_hash = function (url) {
     var matches = url.match(/([&#])([^#&=]+)=?([^&#]+)/g) || [];
     var queryHash = {};
     _.each(matches, function (query) {
@@ -28,8 +28,7 @@ ResourceTable.HashUrlState.prototype.parse_hash = function (url) {
     return this.parseUrlDotNetStyle(queryHash);
 };
 
-ResourceTable.HashUrlState.prototype.parseUrlDotNetStyle = function (urlHash) {
-
+ResourceTable.HashUrlStateStorage.prototype.parseUrlDotNetStyle = function (urlHash) {
     var filter = {};
     _.each(urlHash, function (value, key) {
         var match = key.match(/^filter\[(\w+)\]$/);
@@ -47,22 +46,20 @@ ResourceTable.HashUrlState.prototype.parseUrlDotNetStyle = function (urlHash) {
 };
 
 
-ResourceTable.HashUrlState.prototype.change = function (new_hash) {
-    var self = this;
+ResourceTable.HashUrlStateStorage.prototype.change = function (new_hash) {
     _.extend(this.currentState, new_hash);
-
     ResourceTable.Navigation.change_hash(ResourceTable.Url.hash_to_query(this.currentState));
 };
 
-ResourceTable.HashUrlState.prototype.hasFilter = function () {
+ResourceTable.HashUrlStateStorage.prototype.hasFilter = function () {
     return !_.isEmpty(this.currentState.filter);
 };
 
-ResourceTable.HashUrlState.prototype.hasSort = function () {
+ResourceTable.HashUrlStateStorage.prototype.hasSort = function () {
     return !_.isEmpty(this.currentState.sort);
 };
 
-ResourceTable.HashUrlState.prototype.onChange = function (callBack) {
+ResourceTable.HashUrlStateStorage.prototype.onChange = function (callBack) {
     var self = this;
 
     if ("onhashchange" in window) {
@@ -84,25 +81,25 @@ ResourceTable.HashUrlState.prototype.onChange = function (callBack) {
 };
 
 
-ResourceTable.MemoryState = function () {
+ResourceTable.MemoryStateStorage = function () {
     this.currentState = { sort: {}, filter: {}};
 };
 
-ResourceTable.MemoryState.prototype.hasFilter = function () {
+ResourceTable.MemoryStateStorage.prototype.hasFilter = function () {
     return !_.isEmpty(this.currentState.filter);
 };
 
-ResourceTable.MemoryState.prototype.hasSort = function () {
+ResourceTable.MemoryStateStorage.prototype.hasSort = function () {
     return !_.isEmpty(this.currentState.sort);
 };
 
-ResourceTable.MemoryState.prototype.onChange = function (callBack) {
+ResourceTable.MemoryStateStorage.prototype.onChange = function (callBack) {
     this.onChangeCallback = callBack;
 };
 
-ResourceTable.MemoryState.prototype.change = function (new_hash) {
+ResourceTable.MemoryStateStorage.prototype.change = function (new_hash) {
     this.query = _.extend(this.currentState, new_hash);
     this.onChangeCallback();
 };
 
-ResourceTable.MemoryState.prototype.refresh = function () {};
+ResourceTable.MemoryStateStorage.prototype.refresh = function () {};

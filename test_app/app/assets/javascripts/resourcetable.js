@@ -8,10 +8,10 @@ if (typeof ResourceTable === 'undefined') {
 
 ResourceTable.FilterTemplate = "filter[<%= key %>]";
 
-ResourceTable.StateMethods =
+ResourceTable.StateStorageMethods =
 {
-    hash: function() { return new ResourceTable.HashUrlState(); },
-    memory: function() { return new ResourceTable.MemoryState(); }
+    hash: function() { return new ResourceTable.HashUrlStateStorage(); },
+    memory: function() { return new ResourceTable.MemoryStateStorge(); }
 };
 
 ResourceTable.Loader = function (options) {
@@ -26,7 +26,6 @@ ResourceTable.Loader = function (options) {
         defaultFilter: {},
         defaultSort: {}
     };
-
     
     self.options = _.extend(defaults, options);
     self.state = self.options.stateMethod();

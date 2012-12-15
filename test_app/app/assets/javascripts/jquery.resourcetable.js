@@ -27,7 +27,7 @@
                 afterLoad: self.options.afterDataLoad,
                 defaultSort: self.options.defaultSort,
                 defaultFilter: self.filters.currentState(),
-                stateMethod: ResourceTable.StateMethods[self.options.stateMethod]
+                stateMethod: ResourceTable.StateStorageMethods[self.options.stateMethod]
             };
 
             self.table = new ResourceTable.Loader(resourceTableOptions);

@@ -37,7 +37,7 @@ end
 
 task :publish => :environment do 
 
-	files = ["resourcetable.js","pagination.js", "state.js", "datasource.js", "jquery.resourcetable.js" ]
+	files = ["resourcetable.js","pagination.js", "datasource.js", "statestorage.js", "currentstate.js", "jquery.resourcetable.js"]
 	command = "cat "
 	command += files.map {|file_name| "app/assets/javascripts/#{file_name}"}.join(" ")
 	command += "  > ../lib/resourcetable.js"

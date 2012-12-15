@@ -24,8 +24,7 @@ ResourceTable.Url.hash_to_query = function (state) {
 ResourceTable.Url.hash_to_url = function (base_url, state) {
     var appender = /\?/.test(base_url) ? '&' : '?';
     var url = base_url + appender;
-    url += ResourceTable.Url.hash_to_query(state.currentState);
-    return url;
+    return url + ResourceTable.Url.hash_to_query(state.currentState);
 };
 
 ResourceTable.DataSource = {};
