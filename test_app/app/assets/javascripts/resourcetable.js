@@ -11,7 +11,7 @@ ResourceTable.FilterTemplate = "filter[<%= key %>]";
 ResourceTable.StateStorageMethods =
 {
     hash: function() { return new ResourceTable.HashUrlStateStorage(); },
-    memory: function() { return new ResourceTable.MemoryStateStorge(); }
+    memory: function() { return new ResourceTable.MemoryStateStorage(); }
 };
 
 ResourceTable.Loader = function (options) {
@@ -63,12 +63,12 @@ ResourceTable.Loader.prototype.load = function () {
     var self = this;    
 
     // TODO: Refactor defaults
-    if (!self.state.hasFilter() && !_.isEmpty(self.defaultFilter)) {
+    if (!self.state.currentState.hasFilter() && !_.isEmpty(self.defaultFilter)) {
         self.filter(self.options.defaultFilter);
         return;
     }
 
-    if (!this.state.hasSort() && !_.isEmpty(this.defaultSort)) {
+    if (!this.state.currentState.hasSort() && !_.isEmpty(this.defaultSort)) {
         self.sort(self.options.defaultSort.key, self.options.defaultSort.direction);
         return;
     }

@@ -7,6 +7,7 @@ ResourceTable.Navigation.change_hash = function (hash) {
     window.location.hash = hash;
 };
 
+
 ResourceTable.HashUrlStateStorage = function () {
     this.refresh();
 };
@@ -37,11 +38,13 @@ ResourceTable.HashUrlStateStorage.prototype.parseUrlDotNetStyle = function (urlH
         }
     });
 
-    var currentState = {
+    var currentState = new ResourceTable.CurrentState()
+
+    _.extend(currentState, {
         page: urlHash.page,
         sort: { key: urlHash.sort, direction: urlHash.sort_direction },
         filter: filter
-    };
+    });
     return currentState;
 };
 
@@ -49,14 +52,6 @@ ResourceTable.HashUrlStateStorage.prototype.parseUrlDotNetStyle = function (urlH
 ResourceTable.HashUrlStateStorage.prototype.change = function (new_hash) {
     _.extend(this.currentState, new_hash);
     ResourceTable.Navigation.change_hash(ResourceTable.Url.hash_to_query(this.currentState));
-};
-
-ResourceTable.HashUrlStateStorage.prototype.hasFilter = function () {
-    return !_.isEmpty(this.currentState.filter);
-};
-
-ResourceTable.HashUrlStateStorage.prototype.hasSort = function () {
-    return !_.isEmpty(this.currentState.sort);
 };
 
 ResourceTable.HashUrlStateStorage.prototype.onChange = function (callBack) {
@@ -82,15 +77,7 @@ ResourceTable.HashUrlStateStorage.prototype.onChange = function (callBack) {
 
 
 ResourceTable.MemoryStateStorage = function () {
-    this.currentState = { sort: {}, filter: {}};
-};
-
-ResourceTable.MemoryStateStorage.prototype.hasFilter = function () {
-    return !_.isEmpty(this.currentState.filter);
-};
-
-ResourceTable.MemoryStateStorage.prototype.hasSort = function () {
-    return !_.isEmpty(this.currentState.sort);
+    this.currentState = new ResourceTable.CurrentState();
 };
 
 ResourceTable.MemoryStateStorage.prototype.onChange = function (callBack) {
