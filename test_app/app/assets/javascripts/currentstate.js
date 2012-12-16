@@ -5,7 +5,7 @@ if (typeof ResourceTable === 'undefined') {
 ResourceTable.CurrentState = function() {
 	var self = this;
 	self.sort = {};
-	self.filters = {}; 
+	self.filter = {}; 
 
 
 	self.hasFilter = function () {
@@ -13,7 +13,7 @@ ResourceTable.CurrentState = function() {
 	};
 
 	self.hasSort = function () {
-	    return !_.isEmpty(self.sort);
+	    return !_.isEmpty(self.sort) && self.sort.key !== undefined;
 	};
 
 	return self;

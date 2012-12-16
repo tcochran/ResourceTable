@@ -13,4 +13,5 @@
 //= require underscore
 //= require jquery-1.7.2.min
 //= require jquery-ui-1.8.18.custom.min
+//= require chosen.jquery.js
 //= require_tree .

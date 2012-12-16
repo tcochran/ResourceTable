@@ -137,23 +137,32 @@ ResourceTableView.Filters.prototype.currentState = function () {
 };
 
 ResourceTableView.SelectFilter = function (key, element, resourceTable) {
+    var self = this;
     this.element = element;
     this.resourceTable = resourceTable;
 
     element.change(function () {
         var filter = {};
-        filter[key] = element.val();
-        
+        var val = self.getValue();
+        filter[key] = val;
         resourceTable.filter(filter);
     });
 };
 
 ResourceTableView.SelectFilter.prototype.setValue = function (value) {
-    this.element.val(value);
+    var values = value == "" ? [] : value.split(",")
+
+    this.element.val(values);
 };
 
 ResourceTableView.SelectFilter.prototype.getValue = function () {
-    return this.element.val();
+    var val = this.element.val();
+
+    if (val == null)
+        return "";
+    if (Array.isArray(val))
+        return val.join(",")
+    return val;
 };
 
 ResourceTableView.DatePickerFilter = function (key, element, resourceTable) {

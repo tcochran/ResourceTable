@@ -13,7 +13,7 @@ class BooksController < ApplicationController
 
       format.json do 
         filter = (params[:filter] || {}).inject({}) do |newFilter, kv| 
-          newFilter[kv[0]] = kv[1] if kv[1] != ""
+          newFilter[kv[0]] = kv[1].split(",") if kv[1] != ""
           newFilter
         end
 

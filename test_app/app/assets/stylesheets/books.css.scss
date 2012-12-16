@@ -1,8 +1,8 @@
-// Place all the styles related to the books controller here.
+// Place all the styles related to the books controll, #filterser here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#books-table, #pagination-summary { font-family: Arial; font-size: 12px; }
+#books-table, #pagination-summary, #filters { font-family: Arial; font-size: 12px; }
 
 #books-table { width: 100%;}
 
@@ -12,6 +12,12 @@
 #pagination-summary a, #pagination-summary span { margin-right: 3px;}
 
 #pagination-summary a:visited { color: blue; }
+
+#filters > div { float: left; margin-right: 20px; }
+#filters label { display:block;}
+.chzn-container {
+	font-size: 11px;
+}
 
 
 

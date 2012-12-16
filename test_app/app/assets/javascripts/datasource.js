@@ -27,6 +27,8 @@ ResourceTable.Url.hash_to_url = function (base_url, state) {
     return url + ResourceTable.Url.hash_to_query(state.currentState);
 };
 
+
+
 ResourceTable.DataSource = {};
 
 ResourceTable.DataSource.JqueryAjax = function(base_url) {
@@ -53,6 +55,7 @@ ResourceTable.DataSource.JqueryAjax = function(base_url) {
 		load: load
 	};
 };
+
 
 
 ResourceTable.DataSource.Json = function(data) {

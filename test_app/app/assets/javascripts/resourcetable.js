@@ -38,18 +38,26 @@ ResourceTable.Loader = function (options) {
 };
 
 ResourceTable.Loader.prototype.sort = function (key, direction) {
-    this.state.change({ sort: { key: key, direction: direction }});
+    this.changeState({ sort: { key: key, direction: direction }})
 };
 
 ResourceTable.Loader.prototype.filter = function (filterHash) {
-    var filterHashWithPrefix = {};
-    var self = this;
-
-    var filter = _.clone(self.state.currentState.filter)
-    _.extend(filter, filterHash);
-
-    self.state.change({filter: filter});
+    
+    this.changeState({filter: filterHash})
 };
+
+ResourceTable.Loader.prototype.changeState = function(new_state)
+{   
+    var self = this;
+    updatedState = {};
+    _.each(new_state, function(values, key) {
+        var clonedValues = _.clone(self.state.currentState[key]);
+        _.extend(clonedValues, values);        
+        updatedState[key] = clonedValues;       
+    });
+
+    this.state.change(updatedState);   
+}
 
 ResourceTable.Loader.prototype.currentState = function() {
     return this.state.currentState;
@@ -61,15 +69,19 @@ ResourceTable.Loader.prototype.changePage = function (page_num) {
 
 ResourceTable.Loader.prototype.load = function () {
     var self = this;    
+    var newState = {};
 
-    // TODO: Refactor defaults
-    if (!self.state.currentState.hasFilter() && !_.isEmpty(self.defaultFilter)) {
-        self.filter(self.options.defaultFilter);
-        return;
+    if (!self.state.currentState.hasFilter() && !_.isEmpty(self.options.defaultFilter)) {
+        newState.filter = self.options.defaultFilter;
     }
 
-    if (!this.state.currentState.hasSort() && !_.isEmpty(this.defaultSort)) {
-        self.sort(self.options.defaultSort.key, self.options.defaultSort.direction);
+    if (!self.state.currentState.hasSort() && !_.isEmpty(this.options.defaultSort)) {
+        newState.sort = self.options.defaultSort;
+    }
+
+    if (!_.isEmpty(newState))
+    {
+        self.changeState(newState);
         return;
     }
 

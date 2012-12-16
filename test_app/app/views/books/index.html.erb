@@ -1,3 +1,24 @@
+<div id="filters">
+  <div>
+    <label for="author_id">Name</label>
+    <select id="author_id" name="author_id" class="filter" >
+          <%= options_for_select [""] + @authors %>
+    </select>
+  </div>
+  <div>
+    <label for="subject_id">Subject</label>
+    <select multiple name="subject_id" class="filter" style="width:350px;">
+      <%= options_for_select [""] + @subjects %>
+    </select>
+  </div>
+  <div>
+    <label for="language_id">Language</label>
+    <select name="language_id" class="filter">
+      <%= options_for_select [""] + @languages, ["en", 1]%>
+    </select>
+  </div>
+</div>
+
 <table id="books-table" cellspacing=0px>
   <thead>
     <th ><a href="" name='name' class="name sorting" >Name</a></th>
@@ -9,27 +30,7 @@
   <tbody>
 
   </tbody>
-  <tfoot>
-    <th class="name"></th>
-    <th>
-      <select name="author_id" class="filter">
-        <%= options_for_select [""] + @authors %>
-      </select>
-    </th>
-
-    <th>
-      <select name="subject_id" class="filter">
-        <%= options_for_select [""] + @subjects %>
-      </select>
-    </th>
-
-    <th>
-      <select name="language_id" class="filter">
-        <%= options_for_select [""] + @languages %>
-      </select>
-    </th>
-    <th></th>
-  </tfoot>
+  
 </table>
 
 
@@ -66,18 +67,13 @@
     },
     paginationElement: $("#pagination-summary"),
     sortElements: $(".sorting"),
-    filterElements: $(".filter")
+    filterElements: $(".filter"),
+    defaultSort: {key: "subjects.name", direction: "ascending"}
   });
 
   $("table").resourceTable("load");
-  // $(".filter").change(function(){
-  //   var element = $(this);
-  //   var key = element.attr("name");
-  //   var filter = {}
-  //   filter[key] = element.val();
-  //   $("table").resourceTable("filter", filter );
-  //   return false;
-  // });
+  $("select").chosen({allow_single_deselect:true});
+  
 
 </script>
 

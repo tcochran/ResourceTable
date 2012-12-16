@@ -8,6 +8,7 @@ ResourceTable.Navigation.change_hash = function (hash) {
 };
 
 
+
 ResourceTable.HashUrlStateStorage = function () {
     this.refresh();
 };
@@ -74,6 +75,7 @@ ResourceTable.HashUrlStateStorage.prototype.onChange = function (callBack) {
         }, 100);
     }
 };
+
 
 
 ResourceTable.MemoryStateStorage = function () {
