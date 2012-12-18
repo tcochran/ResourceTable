@@ -11,6 +11,7 @@ gem "bson_ext"
 
 gem 'pg'
 gem 'nokogiri'
+gem 'thin'
 
 
 # Gems used only for assets and not required
