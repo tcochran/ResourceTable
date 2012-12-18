@@ -163,9 +163,11 @@ ResourceTableView.SelectFilter.prototype.getValue = function () {
 
     if (val == null)
         return "";
-    if (Array.isArray(val))
-        return val.join(",")
-    return val;
+    if (typeof(val) == "string")
+        return val;
+
+    
+    return val.join(",")
 };
 
 ResourceTableView.DatePickerFilter = function (key, element, resourceTable) {
