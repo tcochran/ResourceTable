@@ -60,7 +60,7 @@
   var compiled = _.template($("#rowTemplate").html());
 
   $("table").resourceTable( { 
-    url: "http://localhost:3000/books", 
+    url: "books", 
     renderDataCallBack: function(results) { 
       $("tbody").empty();
       _.each(results.data, function(row) { $("tbody").append(compiled(row)) });
