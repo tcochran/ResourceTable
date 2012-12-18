@@ -135,7 +135,6 @@ ResourceTableView.Filters.prototype.currentState = function () {
         if (val != null && val != "")
             currentState[key] = filter.getValue();
     });
-    console.log(currentState);
     return currentState;
 };
 
