@@ -27,6 +27,7 @@ ResourceTable.Loader = function (options) {
         defaultSort: {}
     };
     
+    self.loaded = false;
     self.options = _.extend(defaults, options);
     self.state = self.options.stateMethod();
     self.pagination = new ResourceTable.Pagination();
@@ -71,23 +72,27 @@ ResourceTable.Loader.prototype.load = function () {
     var self = this;    
     var newState = {};
 
-    if (!self.state.currentState.hasFilter() && !_.isEmpty(self.options.defaultFilter)) {
-        newState.filter = self.options.defaultFilter;
-    }
-
-    if (!self.state.currentState.hasSort() && !_.isEmpty(this.options.defaultSort)) {
-        newState.sort = self.options.defaultSort;
-    }
-
-    if (!_.isEmpty(newState))
+    if (!self.loaded)
     {
-        self.changeState(newState);
-        return;
+        if (!self.state.currentState.hasFilter() && !_.isEmpty(self.options.defaultFilter)) {
+            newState.filter = self.options.defaultFilter;
+        }
+
+        if (!self.state.currentState.hasSort() && !_.isEmpty(this.options.defaultSort)) {
+            newState.sort = self.options.defaultSort;
+        }
+
+        if (!_.isEmpty(newState))
+        {
+            self.changeState(newState);
+            return;
+        }
     }
 
     self.options.beforeDataLoad(self.state.currentState);
 
     self.datasource.load(this.state, function (result, currentState) {
+        self.loaded = true;
         currentState.paginationSummary = self.pagination.generate(result);
         self.options.onLoad(result, currentState);
         self.options.afterDataLoad(currentState);

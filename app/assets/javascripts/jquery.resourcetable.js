@@ -13,7 +13,7 @@
 
         _create: function () {
             var self = this;
-
+            
             this.filters = new ResourceTableView.Filters(self.options.filterElements, self);
 
             var resourceTableOptions = {
@@ -131,8 +131,11 @@ ResourceTableView.Filters.prototype.currentState = function () {
     var self = this;
     var currentState = {};
     _.each(self.filters, function (filter, key) {
-        currentState[key] = filter.getValue();
+        var val = filter.getValue();
+        if (val != null && val != "")
+            currentState[key] = filter.getValue();
     });
+    console.log(currentState);
     return currentState;
 };
 
